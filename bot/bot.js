@@ -9,6 +9,6 @@ var bot = new TelegramBot(token, {
     //webHook: {port: port, host: host},
     polling: true
 });
-//bot.setWebHook(url, cert);
+bot.setWebHook(url);
 
 module.exports = bot;
