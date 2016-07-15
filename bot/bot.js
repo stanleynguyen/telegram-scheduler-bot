@@ -5,10 +5,7 @@ var TelegramBot = require("node-telegram-bot-api"),
     url = process.env.URL,
     cert = '../certificate/cert.pem';
 
-var bot = new TelegramBot(token, {
-    //webHook: {port: port, host: host},
-    polling: true
-});
-bot.setWebHook(url);
+var bot = new TelegramBot(token);
+bot.setWebHook(url + bot.token, cert);
 
 module.exports = bot;
