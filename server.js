@@ -10,7 +10,7 @@ require("./bot/setup")();
 app.use(bodyParser.json());
 
 app.post('/' + process.env.TOKEN, function (req, res) {
-  //require("./bot/bot").processUpdate(req.body);
+  require("./bot/bot").processUpdate(req.body);
   res.sendStatus(200);
 });
 
