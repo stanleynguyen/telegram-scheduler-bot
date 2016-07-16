@@ -1,16 +1,18 @@
 var Taskboard = require("./models/taskboard"),
-    helpLib = require("./helplib");
+    helpLib = require("./helplib"),
+    Chuck = require("chucknorris-io"),
+    fact = new Chuck();
 
 module.exports = function(bot) {
     var errMessage = "Sorry there's something wrong with the server\nPlease try again!";
     bot.onText(/^\/start((\s+|)@schedulerr_bot|)$/, function(message) {
         var chatID = message.chat.id;
-        bot.sendMessage(chatID, "Hi there! My name is Schedulerr\nI have a big brain that can store tasks for you\nYou can command me using:\n\n" + commandList());
+        bot.sendMessage(chatID, "Hi there! My name is Schedulerr\nI have a big brain that can store tasks for you (Need proof? I know a lot of Chuck Norris facts, tell me /chuckfact)\nYou can command me using:\n\n" + commandList());
     });
     //bot introduction
     bot.onText(/^\/whoareyou((\s+|)@schedulerr_bot|)$/, function(message) {
         var chatID = message.chat.id;
-        bot.sendMessage(chatID, "I'm a scheduler bot created by Stanley Nguyen\nHow can I help you?\nI can understand a few certain commands only, please say /commands to see");
+        bot.sendMessage(chatID, "I'm a scheduler bot created by Stanley Nguyen\nI can remember things for you and I know a lot of Chuck Norris facts\nBut I can understand a few certain commands only, please say /commands to see");
     });
     //see commands
     bot.onText(/^\/commands((\s+|)@schedulerr_bot|)$/, function(message) {
@@ -87,6 +89,14 @@ module.exports = function(bot) {
                     });
                 }
             }
+        });
+    });
+    //chuck norris fact
+    bot.onText(/^\/chuckfact((\s+|)@schedulerr_bot|)$/, function(message) {
+        var chatID = message.chat.id;
+        fact.getRandomJoke(function(err, joke) {
+            if (err) return bot.sendMessage(chatID, errMessage);
+            bot.sendMessage(chatID, joke.value);
         });
     });
     //foul language

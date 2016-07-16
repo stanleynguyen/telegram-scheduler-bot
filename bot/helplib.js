@@ -4,5 +4,6 @@ module.exports = {
     "schedule <task>" : "add an item to taskboard\n(*note: there must be space between command and task description)",
     "log" : "tasks you have scheduled",
     "delete <number>" : "strike off finished task\n(*note: there must be space between command and task number)",
+    "chuckfact" : "Chuck Norris facts",
     "commands" : "how to command me"
 };
