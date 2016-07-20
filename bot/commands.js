@@ -5,22 +5,22 @@ var Taskboard = require("./models/taskboard"),
 
 module.exports = function(bot) {
     var errMessage = "Sorry there's something wrong with the server\nPlease try again!";
-    bot.onText(/^\/start((\s+|)@schedulerr_bot|)$/, function(message) {
+    bot.onText(/^\/start((\s+|)@schedulerr_bot|)$/i, function(message) {
         var chatID = message.chat.id;
         bot.sendMessage(chatID, "Hi there! My name is Schedulerr\nI have a big brain that can store tasks for you (Need proof? I know a lot of Chuck Norris facts, tell me /chuckfact)\nYou can command me using:\n\n" + commandList());
     });
     //bot introduction
-    bot.onText(/^\/whoareyou((\s+|)@schedulerr_bot|)$/, function(message) {
+    bot.onText(/^\/whoareyou((\s+|)@schedulerr_bot|)$/i, function(message) {
         var chatID = message.chat.id;
         bot.sendMessage(chatID, "I'm a scheduler bot created by Stanley Nguyen\nI can remember things for you and I know a lot of Chuck Norris facts\nBut I can understand a few certain commands only, please say /commands to see");
     });
     //see commands
-    bot.onText(/^\/commands((\s+|)@schedulerr_bot|)$/, function(message) {
+    bot.onText(/^\/commands((\s+|)@schedulerr_bot|)$/i, function(message) {
         var chatID = message.chat.id;
         bot.sendMessage(chatID, "Here are ways that you can command me:\n\n" + commandList());
     });
     //register taskboard
-    bot.onText(/^\/register((\s+|)@schedulerr_bot|)$/, function(message, match) {
+    bot.onText(/^\/register((\s+|)@schedulerr_bot|)$/i, function(message, match) {
         var chatID = message.chat.id;
         Taskboard.findOne({_id: chatID}, function(err, taskboard) {
             if (err) return bot.sendMessage(chatID, errMessage);
@@ -41,7 +41,7 @@ module.exports = function(bot) {
         });
     });
     //schedule a task 
-    bot.onText(/^\/schedule(\s+\w+)+((\s+|)@schedulerr_bot|)$/, function(message, match) {
+    bot.onText(/^\/schedule(\s+\w+)+((\s+|)@schedulerr_bot|)$/i, function(message, match) {
         var chatID = message.chat.id;
         var task = match[0].slice(match[0].search(/\s+/), match[0].length).replace('@schedulerr_bot', '').trim();
         Taskboard.findOne({_id: chatID}, function(err, taskboard) {
@@ -58,7 +58,7 @@ module.exports = function(bot) {
         });
     });
     //log out tasks
-    bot.onText(/^\/log((\s+|)@schedulerr_bot|)$/, function(message) {
+    bot.onText(/^\/log((\s+|)@schedulerr_bot|)$/i, function(message) {
         var chatID = message.chat.id;
         Taskboard.findOne({_id: chatID}, function(err, taskboard) {
             if (err) return bot.sendMessage(chatID, errMessage);
@@ -70,7 +70,7 @@ module.exports = function(bot) {
         });
     });
     //delete task
-    bot.onText(/^\/delete\s+\d+((\s+|)@schedulerr_bot|)$/, function(message, match) {
+    bot.onText(/^\/delete\s+\d+((\s+|)@schedulerr_bot|)$/i, function(message, match) {
         var chatID = message.chat.id;
         var matchNum = match[0].slice(match[0].search(/\s+/), match[0].length).replace('@schedulerr_bot', '').trim();
         var taskNum = parseInt(matchNum, 10);
@@ -92,7 +92,7 @@ module.exports = function(bot) {
         });
     });
     //chuck norris fact
-    bot.onText(/^\/chuckfact((\s+|)@schedulerr_bot|)$/, function(message) {
+    bot.onText(/^\/chuckfact((\s+|)@schedulerr_bot|)$/i, function(message) {
         var chatID = message.chat.id;
         fact.getRandomJoke(function(err, joke) {
             if (err) return bot.sendMessage(chatID, errMessage);
@@ -100,7 +100,7 @@ module.exports = function(bot) {
         });
     });
     //foul language
-    bot.onText(/(fuck|shit|dick|vagina|penis|pussy|anus|ass|nigga)(\s+|)((\s+|)@schedulerr_bot|)$/, function(message) {
+    bot.onText(/(fuck|shit|dick|vagina|penis|pussy|anus|ass|nigga)(\s+|)((\s+|)@schedulerr_bot|)$/i, function(message) {
         var chatID = message.chat.id;
         bot.sendMessage(chatID, "Please refrain from using foul language!\nThat's not polite!");
     });
