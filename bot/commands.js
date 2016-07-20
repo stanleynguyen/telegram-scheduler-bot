@@ -100,7 +100,7 @@ module.exports = function(bot) {
         });
     });
     //foul language
-    bot.onText(/(fuck|shit|dick|vagina|penis|pussy|anus|ass|nigga)/, function(message) {
+    bot.onText(/(fuck|shit|dick|vagina|penis|pussy|anus|ass|nigga)(\s+|)((\s+|)@schedulerr_bot|)$/, function(message) {
         var chatID = message.chat.id;
         bot.sendMessage(chatID, "Please refrain from using foul language!\nThat's not polite!");
     });
