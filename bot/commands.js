@@ -52,7 +52,7 @@ module.exports = function(bot) {
                 taskboard.tasks.push(task);
                 taskboard.save(function(err) {
                     if (err) return bot.sendMessage(chatID, errMessage);
-                    bot.sendMessage(chatID, "You have successfully added an item to " + (taskboard.title||"your") + " board!");
+                    bot.sendMessage(chatID, "You have successfully added an item to " + (taskboard.group||"your") + " board!");
                 });
             }
         });
