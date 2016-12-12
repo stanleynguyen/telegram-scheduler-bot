@@ -20,6 +20,8 @@ It knows a lot of Chuck Norris facts as well, in case you are bored ;)
 
 **/delete** - delete task
 
+**/remind** - scheduled task reminder
+
 **/chuckfact** - Chuck Norris facts
 
 **/commands** - view available commands
