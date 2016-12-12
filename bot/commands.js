@@ -40,7 +40,7 @@ module.exports = function(bot) {
             }
         });
     });
-    //schedule a task 
+    //schedule a task
     bot.onText(/^\/schedule(\s+\w+)+((\s+|)@schedulerr_bot|)$/i, function(message, match) {
         var chatID = message.chat.id;
         var task = match[0].slice(match[0].search(/\s+/), match[0].length).replace('@schedulerr_bot', '').trim();
@@ -90,6 +90,18 @@ module.exports = function(bot) {
                 }
             }
         });
+    });
+    bot.onText(/^\/remind\s+\w+\s+\d+((\s+|)@schedulerr_bot|)$/i, function(message, match) {
+      var chatID = message.chat.id;
+      var task = match[0].slice(match[0].search(/\s+\w+/), match[0].search(/\s+\d+/)).trim();
+      var matchNum = match[0].slice(match[0].search(/\s+\d+/), match[0].length).replace('@schedulerr_bot', '').trim();
+      var countDuration = parseInt(matchNum, 10) * 60000;
+      bot.sendMessage(chatID, 'Start counting down for ' + matchNum + ' minutes');
+      setTimeout(bot.sendMessage.bind(
+        bot,
+        chatID,
+        'Reminder: ' + task
+      ), countDuration);
     });
     //chuck norris fact
     bot.onText(/^\/chuckfact((\s+|)@schedulerr_bot|)$/i, function(message) {
