@@ -1,3 +1,5 @@
+if (process.env.NODE_ENV === 'dev') require('dotenv').load();
+
 var express = require("express"),
     app = express(),
     mongoose = require("mongoose"),

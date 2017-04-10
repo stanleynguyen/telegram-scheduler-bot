@@ -1,10 +1,12 @@
 var Taskboard = require("./models/taskboard"),
     helpLib = require("./helplib"),
     Chuck = require("chucknorris-io"),
-    fact = new Chuck();
+    fact = new Chuck(),
+    request = require('request');
+var errMessage = "Sorry there's something wrong with the server\nPlease try again!";
 
 module.exports = function(bot) {
-    var errMessage = "Sorry there's something wrong with the server\nPlease try again!";
+    
     bot.onText(/^\/start((\s+|)@schedulerr_bot|)$/i, function(message) {
         var chatID = message.chat.id;
         bot.sendMessage(chatID, "Hi there! My name is Schedulerr\nI have a big brain that can store tasks for you (Need proof? I know a lot of Chuck Norris facts, tell me /chuckfact)\nYou can command me using:\n\n" + commandList());
@@ -111,15 +113,12 @@ module.exports = function(bot) {
             bot.sendMessage(chatID, joke.value);
         });
     });
-    //foul language
-    bot.onText(/(fuck|shit|dick|vagina|penis|pussy|anus|ass|nigga)(\s+|)((\s+|)@schedulerr_bot|)$/i, function(message) {
-        var chatID = message.chat.id;
-        bot.sendMessage(chatID, "Please refrain from using foul language!\nThat's not polite!");
+    // let cleverbot handle the rest
+    bot.onText(/^(((?!(\/start|\/whoareyou|\/register|\/schedule|\/log|\/delete|\/remind|\/chuckfact|\/commands)).)+)$/, function(message, match) {
+      var chatID = message.chat.id;
+      var text = match[0].replace('@schedulerr_bot', '').trim();
+      createClvSess(bot, chatID, text);
     });
-    //print out message for debugging
-    // bot.onText(/(.*?)/, function(message) {
-    //     console.log(message);
-    // });
 };
 
 function commandList() {
@@ -137,4 +136,33 @@ function generateTaskList(taskList) {
         message += (i + 1).toString() + " - " + taskList[i] + "\n";
     }
     return message;
+}
+
+function createClvSess(bot, chatID, text) {
+  request.post({ url: 'https://cleverbot.io/1.0/create', form: {
+    user: process.env.CLV_USR,
+    key: process.env.CLV_KEY,
+    nick: chatID
+  }}, function(err, httpRes, body) {
+    if (err) return bot.sendMessage(chatID, errMessage);
+    askClv(bot, chatID, text);
+  });
+}
+
+function askClv(bot, chatID, text) {
+  request.post({ url: 'https://cleverbot.io/1.0/ask', form: {
+    user: process.env.CLV_USR,
+    key: process.env.CLV_KEY,
+    nick: chatID,
+    text: text
+  }}, function(err, httpRes, body) {
+    if (err) return bot.sendMessage(chatID, errMessage);
+    try {
+      var status = JSON.parse(body).status;
+    } catch(e) {
+      return bot.sendMessage(chatID, errMessage);
+    }
+    if (status !== 'success') return bot.sendMessage(chatID, errMessage);
+    bot.sendMessage(chatID, JSON.parse(body).response);
+  });
 }
