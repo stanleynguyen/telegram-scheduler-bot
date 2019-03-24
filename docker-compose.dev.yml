@@ -1,0 +1,24 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: ./
+      dockerfile: dev.dockerfile
+    image: schedulerdev
+    volumes:
+      - ./:/go/src/github.com/stanleynguyen/telegram-scheduler-bot
+    networks:
+      - scheduler-net
+    ports:
+      - '8080:8080'
+
+  mongodb:
+    image: mongo
+    volumes:
+      - ./tmp/mongo/data/:/data/db
+    networks:
+      - scheduler-net
+
+networks:
+  scheduler-net:
+    driver: bridge
